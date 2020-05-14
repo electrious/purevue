@@ -123,6 +123,12 @@ let upstream =
 
 let overrides = {=}
 
-let additions = {=}
+let additions = {
+        event-extra =
+          { dependencies = [ "prelude", "event" ]
+          , repo = "https://github.com/manyoo/event-extra.git"
+          , version = "v0.1.5"
+          }
+    }
 
 in  upstream // overrides // additions
