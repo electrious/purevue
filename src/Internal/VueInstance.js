@@ -3,24 +3,22 @@ exports.setProp = name => val => vm => _ => {
 }
 
 // extract the Authorization string from the axios object in vue instance
-exports.getAuthString = vm => _ => {
-  return vm.$axios.defaults.headers.common.Authorization
-}
-
-exports.getXUserId = vm => _ => {
-  return vm.$axios.defaults.headers.common['x-user-id']
+exports.getAxiosHeader = name => vm => _ => {
+  return vm.$axios.defaults.headers.common[name]
 }
 
 exports.getCurrentUser = vm => _ => {
   return vm.$user()
 }
 
-exports.getBaseUrl = _ => {
-  return process.env.API_BASE_URL
-}
-
-exports.getAWSBucket = _ => {
-  return process.env.AWS_S3_BUCKET
+exports.getEnv = name => _ => {
+  let url = process.env[name]
+  if (url) {
+    return url
+  } else {
+    console.error(name + " is not defined in ENV")
+    return undefined
+  }
 }
 
 exports.routerPush = s => r => _ => {

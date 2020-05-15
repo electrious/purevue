@@ -37,12 +37,10 @@ runVue :: forall a. Vue a -> VueInstance -> Effect a
 runVue (Vue a) = runReaderT a
 
 
--- | get Auth String from axios object in the underline vue instance
-foreign import getAuthString :: VueInstance -> Effect String
-foreign import getXUserId :: VueInstance -> Effect Foreign
+-- | get header value from axios object in the underline vue instance
+foreign import getAxiosHeader :: Name -> VueInstance -> Effect Foreign
+foreign import getEnv :: Name -> Effect Foreign
 foreign import getCurrentUser :: VueInstance -> Effect Foreign
-foreign import getBaseUrl :: Effect String
-foreign import getAWSBucket :: Effect String
 
 -- | set a foreign value on the vue instance
 foreign import setProp :: String -> Foreign -> VueInstance -> Effect Unit
