@@ -116,19 +116,22 @@ let additions =
   }
 -------------------------------
 -}
-
-
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.13.6-20200507/packages.dhall sha256:9c1e8951e721b79de1de551f31ecb5a339e82bbd43300eb5ccfb1bf8cf7bbd62
+      https://github.com/purescript/package-sets/releases/download/psc-0.14.2-20210629/packages.dhall sha256:534c490bb73cae75adb5a39871142fd8db5c2d74c90509797a80b8bb0d5c3f7b
 
 let overrides = {=}
 
-let additions = {
-        event-extra =
-          { dependencies = [ "prelude", "event" ]
-          , repo = "https://github.com/manyoo/event-extra.git"
-          , version = "v0.1.5"
-          }
-    }
+let additions =
+      { event =
+        { dependencies = [ "prelude", "filterable" ]
+        , repo = "https://github.com/mikesol/purescript-event.git"
+        , version = "932381bb71093acfc4d46ce38513ee759af0588b"
+        }
+      , event-extra =
+        { dependencies = [ "prelude", "event" ]
+        , repo = "https://github.com/manyoo/event-extra.git"
+        , version = "v0.1.9"
+        }
+      }
 
 in  upstream // overrides // additions

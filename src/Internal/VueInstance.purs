@@ -5,15 +5,14 @@ import Prelude
 import Control.Monad.Except (runExcept)
 import Control.Monad.Reader (class MonadAsk, class MonadReader, ReaderT, ask, runReaderT)
 import Control.Plus (empty)
-import Data.Either (Either(..), fromRight, isRight)
-import Data.Filterable (filter)
+import Data.Either (Either(..))
+import Data.Filterable (separate)
 import Effect (Effect)
 import Effect.Class (class MonadEffect, liftEffect)
 import FRP.Event (Event, create)
 import Foreign (F, Foreign)
 import Foreign.Generic (class Decode, class Encode, decode, encode)
 import Foreign.Index (readProp)
-import Partial.Unsafe (unsafePartial)
 import Unsafe.Coerce (unsafeCoerce)
 import Vue.Common (Name)
 
@@ -93,7 +92,6 @@ defVueMethod name = do
 -- | internal function to get the Event of a prop or method
 getPropEvt :: forall a. Decode a => Name -> Vue (Event a)
 getPropEvt name = do
-    (VueInstance vm) <- ask
     p <- getVuePropUnsafe (name <> "Evt")
     case runExcept p of
         Left _ -> pure empty
@@ -101,7 +99,8 @@ getPropEvt name = do
 
 -- | filter the Right value of Either in an event
 onlyRight :: forall a e. Event (Either e a) -> Event a
-onlyRight = map (unsafePartial fromRight) <<< filter isRight
+onlyRight = f <<< separate
+    where f v = v.right
 
 -- | internal API to push default Prop values into the corresponding
 -- prop Event
